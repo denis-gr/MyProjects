@@ -2,9 +2,14 @@ from django.views.generic import CreateView, UpdateView
 from django.views.generic.base import RedirectView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.conf import settings
+from django.contrib.auth.views import LoginView as 
 
 from .models import User
-from .forms import SignUpForm, UserDetailForm
+from .forms import SignUpForm, UserDetailForm, LoginForm
+
+class LoginView(OldLoginView):
+    form_class = LoginForm
+
 
 class SignUpView(CreateView):
     template_name = 'accounts/sign_up.html'
@@ -31,3 +36,4 @@ class UserDeleteView(LoginRequiredMixin, RedirectView):
         user.is_active = False
         user.save()
         return super().get(request, *args, **kwargs)
+  

@@ -14,12 +14,6 @@
             <form method="POST">
                 {% csrf_token %}
                 <div class="mb-1">
-                    Имя пользователя
-                    <input type="text" class="form-control" name="username">
-                    {{ form.username.help_text }}
-                    {{ form.username.errors }}
-                </div>
-                <div class="mb-1">
                     E-mail
                     <input type="email" class="form-control" name="email">
                     {{ form.email.errors }}

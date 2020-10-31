@@ -10,32 +10,8 @@
             <div id="detail">
                 <table class="mb-3">
                     <tr>
-                        <td>Ник: </td>
-                        <td>{{ object.username }}</td>
-                    </tr>
-                    <tr>
-                        <td>Имя: </td>
-                        {% if object.first_name %}
-                        <td>{{ object.first_name }}</td>
-                        {% else %}
-                        <td>Не указано</td>
-                        {% endif %}
-                    </tr>
-                    <tr>
-                        <td>Фамилия: </td>
-                        {% if object.last_name %}
-                        <td>{{ object.last_name }}</td>
-                        {% else %}
-                        <td>Не указано</td>
-                        {% endif %}
-                    </tr>
-                    <tr>
                         <td>E-mail: </td>
-                        {% if object.email %}
                         <td>{{ object.email }}</td>
-                        {% else %}
-                        <td>Не указано</td>
-                        {% endif %}
                     </tr>
                     <tr>
                         <td>Последний вход: </td>
@@ -51,41 +27,26 @@
                     </tr>
                 </table>
                 <a class="btn btn-primary btn-block mb-2" onclick="switchProfile()">Изменить</a>
-                <a href="{% url 'export' %}" class="btn btn-primary my-1">Экспортировать данные</a>
-                <a href="{% url 'import' %}" class="btn btn-primary my-1">Импортировать данные</a>
+                <a href="{% url 'export' %}" class="btn btn-primary my-1">Экспортировать</a>
+                <a href="{% url 'import' %}" class="btn btn-primary my-1">Импортировать</a>
             </div>
             <div id="update">
                 <form method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="mb-1">
-                        Имя пользователя
-                        <input type="text" class="form-control" name="username" value="{{ form.username.value }}">
-                        {{ form.username.errors }}
-                    </div>
-                    <div class="mb-1">
-                        Имя
-                        <input type="text" class="form-control" name="first_name" value="{{ form.first_name.value }}">
-                        {{ form.first_name.errors }}
-                    </div>
-                    <div class="mb-1">
-                        Фамилия
-                        <input type="text" class="form-control" name="last_name" value="{{ form.last_name.value }}">
-                        {{ form.last_name.errors }}
-                    </div>
-                    <div class="mb-1">
                         E-mail
                         <input type="email" class="form-control" name="email" value="{{ form.email.value }}">
                         {{ form.email.errors }}
                     </div>
-                    <button class="btn btn-primary btn-block mb-2">Изменить</button>
+                    <button class="btn btn-primary btn-block mb-2">Изменить email</button>
                 </form>
                 <div class="mb-2">
                     <a href="{% url 'password_change' %}" class="btn btn-primary my-1">Сменить пароль</a>
-                    <a href="{% url 'user_delete' %}" class="btn btn-primary my-1">Дезактивировать аккаунт</a>                    
+                    <a href="{% url 'user_delete' %}" class="btn btn-primary my-1">Удалить аккаунт</a>                    
                 </div>
                 <div>
-                    <a href="{% url 'export' %}" class="btn btn-primary my-1">Экспортировать данные</a>
-                    <a href="{% url 'import' %}" class="btn btn-primary my-1">Импортировать данные</a>                    
+                    <a href="{% url 'export' %}" class="btn btn-primary my-1">Экспортировать</a>
+                    <a href="{% url 'import' %}" class="btn btn-primary my-1">Импортировать</a>                    
                 </div>
             </div>
         </div>

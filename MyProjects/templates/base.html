@@ -43,7 +43,7 @@
         {% if user.is_authenticated %}
         <div class="dropdown ml-auto">
           <button class="btn dropdown-toggle" type="button" data-toggle="dropdown">
-            {{ user.username }}
+            {{ user.email }}
           </button>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
             <li><a class="dropdown-item" href="{% url 'profile' %}">Профиль</a></li>
