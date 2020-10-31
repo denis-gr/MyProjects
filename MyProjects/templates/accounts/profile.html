@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+
+{% block title %}Изменить пользователя{% endblock %}
+
+{% block content %}
+<section class="profile min-vh-100 my-4">
+    <div class="container">
+        <section class="row justify-content-between">
+            <div class="col-md-3 text-center mb-2">
+                <img class="user-image" src="{{ object.avatar.url }}">
+            </div>
+            <div class="col-md-6" id="detail">
+                <table class="mb-3">
+                    <tr>
+                        <td>Ник: </td>
+                        <td>{{ object.username }}</td>
+                    </tr>
+                    <tr>
+                        <td>Имя: </td>
+                        {% if object.first_name %}
+                        <td>{{ object.first_name }}</td>
+                        {% else %}
+                        <td>Не указано</td>
+                        {% endif %}
+                    </tr>
+                    <tr>
+                        <td>Фамилия: </td>
+                        {% if object.last_name %}
+                        <td>{{ object.last_name }}</td>
+                        {% else %}
+                        <td>Не указано</td>
+                        {% endif %}
+                    </tr>
+                    <tr>
+                        <td>E-mail: </td>
+                        {% if object.email %}
+                        <td>{{ object.email }}</td>
+                        {% else %}
+                        <td>Не указано</td>
+                        {% endif %}
+                    </tr>
+                    <tr>
+                        <td>Последний вход: </td>
+                        <td>{{ object.last_login }}</td>
+                    </tr>
+                    <tr>
+                        <td>Зарегистрирован: </td>
+                        <td>{{ object.date_joined }}</td>
+                    </tr>
+                    <tr>
+                        <td>Активен: </td>
+                        <td>{% if object.is_active %}Да{% else %}Нет{% endif %}</td>
+                    </tr>
+                </table>
+                <a class="btn btn-primary btn-block mb-2" onclick="switchProfile()">Изменить</a>
+                <a href="{% url 'export' %}" class="btn btn-primary my-1">Экспортировать данные</a>
+                <a href="{% url 'import' %}" class="btn btn-primary my-1">Импортировать данные</a>
+            </div>
+            <div class="col-md-8" id="update">
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="mb-1">
+                        Имя пользователя
+                        <input type="text" class="form-control" name="username" value="{{ form.username.value }}">
+                        {{ form.username.errors }}
+                    </div>
+                    <div class="mb-1">
+                        Фото
+                        <div class="form-file">
+                            <input type="file" class="form-file-input" id="file" name="avatar">
+                            <label class="form-file-label" for="file">
+                                <span class="form-file-text">Текущее изображение</span>
+                                <span class="form-file-button">Изменить</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="mb-1">
+                        Имя
+                        <input type="text" class="form-control" name="first_name" value="{{ form.first_name.value }}">
+                        {{ form.first_name.errors }}
+                    </div>
+                    <div class="mb-1">
+                        Фамилия
+                        <input type="text" class="form-control" name="last_name" value="{{ form.last_name.value }}">
+                        {{ form.last_name.errors }}
+                    </div>
+                    <div class="mb-1">
+                        E-mail
+                        <input type="email" class="form-control" name="email" value="{{ form.email.value }}">
+                        {{ form.email.errors }}
+                    </div>
+                    <button class="btn btn-primary btn-block mb-2">Изменить</button>
+                </form>
+                <div class="mb-2">
+                    <a href="{% url 'password_change' %}" class="btn btn-primary my-1">Сменить пароль</a>
+                    <a href="{% url 'user_delete' %}" class="btn btn-primary my-1">Дезактивировать аккаунт</a>                    
+                </div>
+                <div>
+                    <a href="{% url 'export' %}" class="btn btn-primary my-1">Экспортировать данные</a>
+                    <a href="{% url 'import' %}" class="btn btn-primary my-1">Импортировать данные</a>                    
+                </div>
+            </div>
+        </section>
+    </div>
+</section>
+
+
+<script>
+    if (!'{{ form.errors  }}') {
+        document.querySelector("#detail").hidden = false
+        document.querySelector("#update").hidden = true
+    } else {
+        document.querySelector("#detail").hidden = true
+        document.querySelector("#update").hidden = false
+    }
+
+    function switchProfile() {
+        document.querySelector("#detail").hidden = !document.querySelector("#detail").hidden
+        document.querySelector("#update").hidden = !document.querySelector("#update").hidden
+    }
+</script>
+{% endblock %}

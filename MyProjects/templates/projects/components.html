@@ -1,0 +1,97 @@
+<!--Компонент note-->
+<template id="note-template">
+    <div class="note">
+        <modal title="Изменить заметку" :id="'editNote'+id_note">
+            <textarea v-model="note.text" class="form-control"></textarea>
+            <template v-slot:footer>
+                <button type="button" data-dismiss="modal" class="btn btn-primary" @click="remove">Удалить</button>
+                <button type="button" data-dismiss="modal" class="btn btn-primary">Готово</button>
+            </template>
+        </modal>
+        <div class="text" v-text="note.text" data-toggle="modal" :data-target="'#editNote'+id_note"></div>
+    </div>
+</template>
+<script>
+    Vue.component("note", {
+        props: ['id_note'],
+        template: "#note-template",
+        data: (vm) => Object({
+            note: sync_request("GET", `/api/Note/${vm.id_note}/`)
+        }),
+        watch: {
+            note: {
+                handler: 'upload',
+                deep: true,
+            },
+        },
+        methods: {
+            upload: function () {
+                request("PUT", `/api/Note/${this.id_note}/`, () => {}, this.note)
+            },
+            remove: function () {
+                request("DELETE", `/api/Note/${this.id_note}/`, () => {
+                    notes.ids = get_notes_ids()
+                })
+            },
+            date: (date) => new Date(date).toLocaleString(),
+        },
+    })
+</script>
+
+<!--Компонент task-->
+<template id="task-template">
+    <div class="task" :class="[get_status(task)]">
+        <modal title="Подробнее" :id="'detailTask'+id_task">
+            <form>
+                <div>Название <input type="text" class="form-control" v-model="task.name"></div>
+                <div>Мягкий дедлайн<input type="date" class="form-control" v-model="task.soft_deadline"></div>
+                <div>Жесткий дедлайн<input type="date" class="form-control" v-model="task.hard_deadline"></div>
+                <div>Описание<textarea class="form-control" v-model="task.description"></textarea></div>
+            </form>
+            <template v-slot:footer>
+                <button type="button" data-dismiss="modal" class="btn btn-primary" @click="remove">Удалить</button>
+                <button v-if="!task.end" type="button" data-dismiss="modal" class="btn btn-primary"
+                    @click="complete">Выполнить</button>
+                <button type="button" data-dismiss="modal" class="btn btn-primary">Закрыть</button>
+            </template>
+        </modal>
+        <a data-toggle="modal" :data-target="'#detailTask'+id_task">
+            <span class="status-icon"></span>
+            <span class="title h5" v-text="task.name"></span>
+        </a>
+        <div class="description" v-text="task.description"></div>
+    </div>
+</template>
+<script>
+    Vue.component("task", {
+        props: ["id_task"],
+        template: "#task-template",
+        data: (vm) => Object({
+            task: sync_request("GET", `/api/Task/${vm.id_task}/`)
+        }),
+        watch: {
+            task: {
+                handler: 'upload',
+                deep: true,
+            },
+        },
+        methods: {
+            get_status: (task) => task.end ? "completed" : (new Date() >= new Date(task.soft_deadline) && task
+                .soft_deadline) ? "late-soft-deadline" : (new Date() >= new Date(task.hard_deadline) && task
+                .hard_deadline) ? "late-hard-deadline" : "",
+            upload: function () {
+                request("PUT", `/api/Task/${this.id_task}/`, () => {}, this.task)
+            },
+            remove: function () {
+                request("DELETE", `/api/Task/${this.id_task}/`, () => {
+                    tasks.ids = get_tasks_ids()
+                })
+            },
+            complete: function () {
+                request("PATCH", `/api/Task/${this.id_task}/complete/`, (data) => {
+                    this.task = data
+                })
+            }
+        },
+    })
+</script>

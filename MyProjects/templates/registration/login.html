@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}Вход{% endblock %}
+
+{% block content %}
+<section class="min-vh-100 my-4 px-1">
+    <div class="card m-auto" style="max-width: 25rem;">
+        <div class="card-header">
+            <span class="icon back align-middle"></span>
+            <a href="{{ next }}" class="card-title align-middle text-dark">НАЗАД</a>
+        </div>
+        <div class="card-body">
+            <h1 class="text-center">Войти</h1>
+            <form method="POST">
+                {% csrf_token %}
+                {% if form.errors %}
+                    <div class="text-center text-danger">Вы ввели неверный логин или пароль.</div>
+                {% endif %}
+                <div class="mb-1">
+                    Имя пользователя
+                    <input type="text" class="form-control" name="username">
+                    {{ form.username.errors }}
+                </div>
+                <div class="mb-2">
+                    Пароль
+                    <input type="password" class="form-control" name="password">
+                    {{ form.password.errors }}
+                </div>
+                <button type="submit" class="btn btn-primary btn-block mb-1">Войти</button>
+            </form>
+            <a href="{% url 'signup' %}" class="btn btn-primary btn-block mb-1">Зарегистрироватся</a>
+            <a href="{% url 'password_reset' %}">Сбросить пароль</a>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,125 @@
+.user-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 100%;
+    margin-right: 1px;
+}
+
+
+.status-icon,
+.icon {
+    width: 1rem;
+    display: inline-block;
+    height: 1rem;
+    background-image: url("../img/app.svg");
+}
+
+.completed .status-icon {
+    background-image: url("../img/check-square.svg");
+}
+
+.late-soft-deadline .status-icon {
+    background-image: url("../img/alert-square.svg");
+}
+
+.late-hard-deadline .status-icon {
+    background-image: url("../img/x-square.svg");
+}
+
+.icon.add {
+    background-image: url("../img/plus.svg");
+}
+
+.icon.back {
+    background-image: url("../img/chevron-bar-left.svg");
+}
+
+
+.project h1.name {
+    display: inline-block;
+}
+
+.project-info {
+    table td {
+        padding-right: 10px;
+    }
+
+    .description {
+        background-color: darkgray;
+        padding: 10px;
+        border-radius: 5px;
+        margin: 10px 0;
+        position: relative;
+    }
+
+    .project-change {
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        position: absolute;
+        top: 0;
+        right: 0;
+        font-size: 0px;
+        cursor: pointer;
+        ;
+        background-image: url("../img/pencil-square.svg");
+    }
+
+    padding-right: 20px;
+    position: relative;
+}
+
+.tasks,
+.notes {
+    header {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    header,
+    li {
+        border-bottom: 1px solid black;
+    }
+
+    header button {
+        background: none;
+        border: none
+    }
+
+    ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    * {
+        word-break: break-all;
+    }
+
+    width: 100%;
+    padding: 10px;
+    border: 1px solid black;
+    margin: 10px 0;
+    border-radius: 5px;
+}
+
+
+.main-footer {
+    ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    a {
+        color: white;
+    }
+
+    background-color: #353535;
+    color: white;
+}
+
+
+.profile .user-image {
+    border-radius: 50%;
+    width: 200px;
+    height: 200px;
+}

@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %}Мои задачи{% endblock %}
+
+{% block content %}
+
+<section class="min-vh-100 my-4">
+  <div class="container">
+    <div class="tasks" id="tasks">
+      <modal title="Добавить задачу" id="addTask">
+        <div>
+          <div>Название <input type="text" class="form-control" v-model="temp.name"></div>
+          <div>Мягкий дедлайн <input type="date" class="form-control" v-model="temp.soft_deadline"></div>
+          <div>Жесткий дедлайн <input type="date" class="form-control" v-model="temp.hard_deadline"></div>
+          <div>Описание <textarea class="form-control" v-model="temp.description"></textarea></div>
+        </div>
+        <template v-slot:footer>
+          <button type="button" data-dismiss="modal" class="btn btn-primary"
+            @click="add_task(temp); temp = {}">Добавить</button>
+        </template>
+      </modal>
+      <header>
+        <h3>Задачи</h3>
+        <button type="button" data-toggle="modal" data-target="#addTask"><span class="icon add"></span></button>
+      </header>
+      <ul>
+        <li v-for="task in ids" :key="task">
+          <task :id_task="task"></task>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+{% include "components.html" %}
+{% include "tasks/components.html" %}
+
+<!--Главное-->
+<script>
+  const token = String("{{ token }}")
+  const get_ids = () => sync_request("GET", "/api/Task/").map(data => data.id)
+
+  tasks = new Vue({
+    el: "#tasks",
+    data: function () {
+      return {
+        "temp": {},
+        ids: get_ids()
+      }
+    },
+    methods: {
+      add_task: function (data) {
+        data.creator = Number("{{ request.user.id }}")
+        request("POST", `/api/Task/`, (data) => {
+          this.ids = get_ids()
+        }, data)
+      },
+    },
+  })
+</script>
+{% endblock %}

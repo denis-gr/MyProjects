@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %}Мои задачи{% endblock %}
+
+{% block content %}
+
+<section class="min-vh-100 my-4">
+    <div class="container">
+        <div class="notes" id="notes">
+            <modal title="Добавить задачу" id="addNote">
+                <textarea class="form-control" v-model="temp.text"></textarea>
+                <template v-slot:footer>
+                    <button type="button" data-dismiss="modal" class="btn btn-primary"
+                        @click="add_note(temp); temp = {}">Добавить</button>
+                </template>
+            </modal>
+            <header>
+                <h3>Заметки</h3>
+                <button type="button" data-toggle="modal" data-target="#addNote"><span class="icon add"></span></button>
+            </header>
+            <ul>
+                <li v-for="note in ids" :key="note">
+                    <note :id_note="note"></note>
+                </li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+{% include "components.html" %}
+{% include "notes/components.html" %}
+
+<!--Главное-->
+<script>
+    const token = String("{{ token }}")
+    const get_ids = () => sync_request("GET", "/api/Note/").map(data => data.id)
+    notes = new Vue({
+        el: "#notes",
+        data: function () {
+            return {
+                "temp": {},
+                ids: get_ids()
+            }
+        },
+        methods: {
+            add_note: function (data) {
+                data.creator = Number("{{ request.user.id }}")
+                request("POST", `/api/Note/`, (data) => {
+                    this.ids = get_ids()
+                }, data)
+            },
+        },
+    })
+</script>
+{% endblock %}

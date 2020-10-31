@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %}Список проектов{% endblock %}
+
+{% block content %}
+<section class="min-vh-100 my-4">
+  <div class="container">
+    <form class="mb-2">
+      <div class="row mb-3">
+        <label for="search" class="col-md-2 col-form-label">Поиск</label>
+        <div class="col-md-10">
+          <input type="search" class="form-control" id="search" name="search">
+          {{ form.name.errors }}
+        </div>
+      </div>
+      <div class="row mb-3">
+        <label for="ordering" class="col-md-2 col-form-label">Сортировать по:</label>
+        <div class="col-md-10">
+          <select name="ordering" id="ordering" class="form-select">
+            <option value="name_up">Имени (убывание)</option>
+            <option value="name_down">Имени (возрастание)</option>
+            <option value="start_up">Дате создания (убывание)</option>
+            <option value="start_down">Дате создания (возрастание)</option>
+          </select>
+          {{ form.name.errors }}
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary">Показать</button>
+    </form>
+    <div>
+      <a class="btn btn-primary" href="{% url 'project_create' %}">Создать проект</a>
+      <hr>
+      {% for project in object_list %}
+      <article class="mb-3">
+        <a href="{{ project.get_absolute_url}}">
+          <h4>{{ project.name }}</h4>
+        </a>
+        <p class="card-text">{{ project.description }}</p>
+      </article>  
+      <hr>
+      {% empty %}
+      <h2 class="text-center">Проекты не найдены</h2>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

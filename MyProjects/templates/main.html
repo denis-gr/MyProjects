@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Главная страница{% endblock %}
+
+{% block content %}
+<section class="min-vh-100">
+    <section class="bg-danger bg-gradient">
+        <div class="m-auto container py-2" style="max-width: 40rem;">
+            <h2 class="text-center">Работайте с проектами</h2>
+            <p class="mb-0">Этот сайт позволяет вам хранить всю нужную информацию о проектах: задачи, заметки, описание, дедлайн и названия, предоставляя ко всему этому удобный доступ.</p>
+            <img src="{% static 'img/1.png' %}" width="100%">
+        </div>
+    </section>
+    <section class="bg-warning bg-gradient">
+        <div class="m-auto container py-2" style="max-width: 40rem;">
+            <h2 class="text-center">Храните задачи и заметки</h2>
+            <p class="mb-0">Этот сайт позволяет вам хранить задачи и заметки связанные с вашим проектом, предоставляя удобным способ к ним.</p>
+            <img src="{% static 'img/5.png' %}" width="100%">
+        </div>
+    </section>
+    <section class="bg-light bg-gradient">
+        <div class="m-auto container py-2" style="max-width: 40rem;">
+            <h2 class="text-center">Храните задачи и заметки не относящиеся к вашим проектам</h2>
+            <p class="mb-0">Нужно сохранить какую-то задачу или заметку, которая не относится к проекту? Не беда - этот сайт дает вам возможность хранить ваши задачи и заметки точно так же, как и другие.</p>
+            <img src="{% static 'img/4.png' %}" width="100%">
+        </div>
+    </section>
+    <section class="bg-primary bg-gradient">
+        <div class="m-auto container py-2" style="max-width: 40rem;">
+            <h2 class="text-center">Ваши проекты, задачи и заметки не пропадут</h2>
+            <p class="mb-0">Боитесь, что этот сайт потеряет ваши проекты, задачи и заметки? Не волнуйтесь, он будет их бережно хранить. А если вы боитесь, то вы можете делать резервные копии ваших проектов, задач и заметок, а потом восстановить их.</p>
+            <img src="{% static 'img/6.png' %}" width="100%">
+        </div>
+    </section>
+</section>
+{% endblock %}

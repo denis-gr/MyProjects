@@ -1,0 +1,189 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ object.name }}{% endblock %}
+
+{% block content %}
+<section class="min-vh-100 mb-4">
+  <div class="container">
+    <div class="project">
+      <div class="modal" id="edit">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Изменить данные проекта</h5>
+              <button type="button" class="close" data-dismiss="modal">
+                <span>&times;</span>
+              </button>
+            </div>
+            <form method="POST">
+              {% csrf_token %}
+              <div class="modal-body">
+                <div class="mb-1">
+                  Название
+                  <input type="text" class="form-control" name="name" value="{{ form.name.value }}">
+                  {{ form.name.errors }}
+                </div>
+                <div class="mb-1">
+                  Мягкий дедлайн
+                  <input type="date" class="form-control" name="soft_deadline"
+                    value='{{ form.soft_deadline.value |date:"Y-m-d"  }}'>
+                  {{ form.soft_deadline.errors }}
+                </div>
+                <div class="mb-1">
+                  Жесткий дедлайн
+                  <input type="date" class="form-control" name="hard_deadline"
+                    value='{{ form.hard_deadline.value |date:"Y-m-d"  }}'>
+                  {{ form.hard_deadline.errors }}
+                </div>
+                <div class="mb-1">
+                  Описание
+                  <textarea type="data" class="form-control" name="description">{{ form.description.value }}</textarea>
+                  {{ form.description.errors }}
+                </div>
+              </div>
+              <div class="modal-footer">
+                <a class="btn btn-danger" href="delete/">Удалить</a>
+                <button class="btn btn-primary">Сохранить</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <header class="header">
+        <h1 class="name">{{ object.name }}</h1>
+      </header>
+      <div style="max-width: 35rem;">
+        <div class="project-info">
+          <div class="description">{{ object.description }}</div>
+          <table>
+            <tr>
+              <td>Начат:</td>
+              <td>{{ object.start }}</td>
+            </tr>
+            <tr>
+              {% if object.end %}
+              <td>Окончен:</td>
+              <td>{{ object.end }}</td>
+              {% endif %}
+            </tr>
+            <tr>
+              {% if object.soft_deadline %}
+              <td>Мягкий дедлайн:</td>
+              <td>{{ object.soft_deadline }}</td>
+              {% endif %}
+            </tr>
+            <tr>
+              {% if object.hard_deadline %}
+              <td>Жесткий дедлайн:</td>
+              <td>{{ object.hard_deadline }}</td>
+              {% endif %}
+            </tr>
+          </table>
+          <a class="project-change" data-toggle="modal" data-target="#edit">Изменить проект</a>
+        </div>
+      </div>
+      </div>
+      <div class="row">
+        <div class="col-md">
+          <div class="tasks" id="tasks">
+            <modal title="Добавить задачу" id="addTask">
+              <form>
+                <div>Название<input type="text" class="form-control" v-model="temp.name"></div>
+                <div>Мягкий дедлайн<input type="date" class="form-control" v-model="temp.soft_deadline"></div>
+                <div>Жесткий дедлайн<input type="date" class="form-control" v-model="temp.hard_deadline"></div>
+                <div>Описание<textarea class="form-control" v-model="temp.description"></textarea></div>
+              </form>
+              <template v-slot:footer>
+                <button type="button" data-dismiss="modal" class="btn btn-primary"
+                  @click="add_task(temp); temp = {}">Добавить</button>
+              </template>
+            </modal>
+            <header>
+              <h3>Задачи</h3>
+              <button type="button" data-toggle="modal" data-target="#addTask"><span class="icon add"></span></button>
+            </header>
+            <ul>
+              <li v-for="task in ids" :key="task">
+                <task :id_task="task"></task>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md">
+          <div id="notes" class="notes">
+            <modal title="Добавить заметку" id="addNote">
+              <textarea v-model="temp.text" class="form-control"></textarea>
+              <template v-slot:footer>
+                <button type="button" data-dismiss="modal" class="btn btn-primary"
+                  @click="add_note(temp); temp={}">Добавить</button>
+              </template>
+            </modal>
+            <header>
+              <h3>Заметки</h3>
+              <button type="button" data-toggle="modal" data-target="#addNote"><span class="icon add"></button>
+            </header>
+            <ul>
+              <li v-for="note in ids" :key="note">
+                <note :id_note="note"></note>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% include "components.html" %}
+{% include "projects/components.html" %}
+
+<!--Главное-->
+<script>
+  const pk = Number("{{ object.pk }}")
+  const user = Number("{{ request.user.id }}")
+  const token = String("{{ token }}")
+  const is_project_form_erroneous = new Boolean('{{ form.errors  }}')
+
+  if (is_project_form_erroneous == true) {
+    new bootstrap.Modal(document.getElementById('edit')).show();
+  }
+
+  const get_tasks_ids = () => sync_request("GET", `/api/Project/${pk}/get_tasks/`)
+  const get_notes_ids = () => sync_request("GET", `/api/Project/${pk}/get_notes/`)
+
+  tasks = new Vue({
+    el: "#tasks",
+    data: function () {
+      return {
+        "temp": {},
+        ids: get_tasks_ids()
+      }
+    },
+    methods: {
+      add_task: function (data) {
+        request("PATCH", `/api/Project/${pk}/add_task/`, (data) => {
+          this.ids = get_tasks_ids()
+        }, data)
+      },
+    },
+  })
+
+  notes = new Vue({
+    el: "#notes",
+    data: function () {
+      return {
+        "temp": {},
+        ids: get_notes_ids()
+      }
+    },
+    methods: {
+      add_note: function (data) {
+        request("PATCH", `/api/Project/${pk}/add_note/`, (data) => {
+          this.ids = get_notes_ids()
+        }, data)
+      },
+    },
+  })
+</script>
+{% endblock %}

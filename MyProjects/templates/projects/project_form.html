@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}Создать проект{% endblock %}
+
+{% block content %}
+<section class="min-vh-100 my-4">
+    <div class="container">
+        <h1 class="text-center mb-3">Создать проект</h1>
+        <form method="post">
+            {% csrf_token %}
+            <div class="row mb-3">
+                <label for="name" class="col-md-2 col-form-label">Название</label>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" id="name" name="name">
+                    {{ form.name.errors }}
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label for="soft-deadline" class="col-md-2 col-form-label">Мягкий дедлайн</label>
+                <div class="col-md-2">
+                    <input type="date" class="form-control" id="soft-deadline" name="soft_deadline">
+                    {{ form.soft_deadline.errors }}
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label for="hard-deadline" class="col-md-2 col-form-label">Жесткий дедлайн</label>
+                <div class="col-md-2">
+                    <input type="date" class="form-control" id="hard-deadline" name="hard_deadline">
+                    {{ form.hard_deadline.errors }}
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label for="description" class="col-md-2 col-form-label">Описание</label>
+                <div class="col-md-10">
+                    <textarea class="form-control" id="description" name="description"></textarea>
+                    {{ form.description.errors }}
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Создать</button>
+        </form>
+    </div>
+</section>
+{% endblock %}

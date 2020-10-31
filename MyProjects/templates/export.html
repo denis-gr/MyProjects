@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}Экспорт{% endblock %}
+
+{% block content %}
+<section class="min-vh-100 my-4 px-1">
+    <div class="card m-auto" style="max-width: 25rem;">
+        <div class="card-header">
+            <span class="icon back align-middle"></span>
+            <a href="{% url 'profile' %}" class="card-title align-middle text-dark">Профиль</a>
+        </div>
+        <div class="card-body">
+            <h1 class="text-center">Экспорт</h1>
+            <form method="POST">
+                {% csrf_token %}
+                {% for i in form %}
+                <div class="mb-1 form-check">
+                    <input type="checkbox" class="form-check-input" name="{{ i.name }}">
+                    <label class="form-check-label">{{ i.label }}</label>  
+                </div>
+                {% endfor %}
+                <button type="submit" class="btn btn-primary btn-block mb-1">Экспортировать</button>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}

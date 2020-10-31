@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Главная страница{% endblock %}
+
+{% block content %}
+<section class="min-vh-100 mb-4">
+    <section class="container">
+        <h1>О сайте</h1>
+        <p>
+            MyProjects - это сайт для хранения информации о проектах, а так же заметок и задач. Он предоставляет удобный доступ с редактирования информации о проектах, а так же заметок и задач. Информацию о проектах, а так же заметках и задачах вы можете в любой момент сохранить себе на компьютер, а потом её перенести обратно.
+        </p>
+        <p>
+            Сайт оснащен API, с помощи которого вы можете просматривать, добавлять, редактировать и удалять свои проекты, задачи и заметки.
+            <a href="/api/">API</a>
+            <a href="{% url 'get_token' %}">Получить токен для API</a>
+        </p>
+        <p>
+            Для того, что бы сообщить об ошибках, предложениях или чего-нибудь другого, пишите на
+            <a href="mailto:">почту</a>.
+        </p>
+        <h1>Фотографии</h1>
+        <div class="row mb-4">
+            <div class="col-6">
+                <img class="border border-dark" src="{% static 'img/1.png' %}" width="100%">
+            </div>
+            <div class="col-6">
+                <img class="border border-dark" src="{% static 'img/2.png' %}" width="100%">
+            </div>
+        </div>
+        <div class="row mb-4">
+            <div class="col-6">
+                <img class="border border-dark" src="{% static 'img/3.png' %}" width="100%">
+            </div>
+            <div class="col-6">
+                <img class="border border-dark" src="{% static 'img/4.png' %}" width="100%">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <img class="border border-dark" src="{% static 'img/5.png' %}" width="100%">
+            </div>
+            <div class="col-6">
+                <img class="border border-dark" src="{% static 'img/6.png' %}" width="100%">
+            </div>
+        </div>
+    </section>
+</section>
+{% endblock %}

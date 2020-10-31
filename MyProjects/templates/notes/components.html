@@ -1,0 +1,46 @@
+<!--Компонент note-->
+<template id="note-template">
+    <div class="note">
+        <modal title="Изменить заметку" :id="'editNote'+id_note">
+            <textarea v-model="note.text" class="form-control"></textarea>
+            <template v-slot:footer>
+                <button type="button" data-dismiss="modal" class="btn btn-primary" @click="remove">Удалить</button>
+                <button type="button" data-dismiss="modal" class="btn btn-primary">Готово</button>
+            </template>
+        </modal>
+        <div class="text" v-text="note.text" data-toggle="modal" :data-target="'#editNote'+id_note"></div>
+    </div>
+</template>
+
+<script>
+    Vue.component("note", {
+        props: ['id_note'],
+        template: "#note-template",
+        data: (vm) => Object({
+            note: sync_request("GET", `/api/Note/${vm.id_note}/`)
+        }),
+        watch: {
+            note: {
+                handler: 'upload',
+                deep: true,
+            },
+        },
+        methods: {
+            upload: function () {
+                request("PUT", `/api/Note/${this.id_note}/`, () => {}, this.note)
+            },
+            remove: function () {
+                request("DELETE", `/api/Note/${this.id_note}/`, () => {
+                    notes.ids = get_ids()
+                })
+            },
+            date: (date) => new Date(date).toLocaleString(),
+        },
+        computed: {
+            project: function () {
+                title = sync_request("GET", "/api/Project/" + this.task.project).name
+                return 'из проекта "' + title + '"'
+            }
+        }
+    })
+</script>

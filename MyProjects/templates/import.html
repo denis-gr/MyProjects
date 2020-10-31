@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}Импорт{% endblock %}
+
+{% block content %}
+<section class="min-vh-100 my-4 px-1">
+    <div class="card m-auto" style="max-width: 25rem;">
+        <div class="card-header">
+            <span class="icon back align-middle"></span>
+            <a href="{% url 'profile' %}" class="card-title align-middle text-dark">Профиль</a>
+        </div>
+        <div class="card-body">
+            <h1 class="text-center">Импорт</h1>
+            <p>Внимание! При импорте, все ваши старые данные будут удалены.</p>
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="mb-1">
+                    Файл
+                    <div class="form-file">
+                        <input type="file" class="form-file-input" id="file" name="file">
+                        <label class="form-file-label" for="file">
+                            <span class="form-file-text">Ничего</span>
+                            <span class="form-file-button">Изменить</span>
+                        </label>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block mb-1">Начать импорт</button>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}
