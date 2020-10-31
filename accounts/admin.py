@@ -6,7 +6,7 @@ from .models import User
 @admin.register(User)
 class UserAdmin(UserAdminOld):
     fieldsets = (
-        (None, {'fields': ('username', 'avatar', 'password')}),
+        (None, {'fields': ('username', 'password')}),
         ('Персональная информация', {'fields': ('first_name', 'last_name',
                                                 'email')}),
         ('Права доступа', {'fields': ('is_active', 'is_staff', 'is_superuser',

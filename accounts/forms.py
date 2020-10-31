@@ -12,4 +12,4 @@ class SignUpForm(UserCreationForm):
 class UserDetailForm(ModelForm):
     class Meta:
         model = User
-        fields = 'username', 'first_name', 'last_name', 'email', 'avatar'
+        fields = 'username', 'first_name', 'last_name', 'email',

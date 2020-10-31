@@ -1,15 +1,13 @@
 {% extends 'base.html' %}
 
-{% block title %}Изменить пользователя{% endblock %}
+{% block title %}Профиль{% endblock %}
 
 {% block content %}
-<section class="profile min-vh-100 my-4">
-    <div class="container">
-        <section class="row justify-content-between">
-            <div class="col-md-3 text-center mb-2">
-                <img class="user-image" src="{{ object.avatar.url }}">
-            </div>
-            <div class="col-md-6" id="detail">
+<section class="min-vh-100 my-4 px-1">
+    <div class="card m-auto" style="max-width: 25rem;">
+        <div class="card-body">
+            <h1 class="text-center">Профиль</h1>
+            <div id="detail">
                 <table class="mb-3">
                     <tr>
                         <td>Ник: </td>
@@ -56,23 +54,13 @@
                 <a href="{% url 'export' %}" class="btn btn-primary my-1">Экспортировать данные</a>
                 <a href="{% url 'import' %}" class="btn btn-primary my-1">Импортировать данные</a>
             </div>
-            <div class="col-md-8" id="update">
+            <div id="update">
                 <form method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="mb-1">
                         Имя пользователя
                         <input type="text" class="form-control" name="username" value="{{ form.username.value }}">
                         {{ form.username.errors }}
-                    </div>
-                    <div class="mb-1">
-                        Фото
-                        <div class="form-file">
-                            <input type="file" class="form-file-input" id="file" name="avatar">
-                            <label class="form-file-label" for="file">
-                                <span class="form-file-text">Текущее изображение</span>
-                                <span class="form-file-button">Изменить</span>
-                            </label>
-                        </div>
                     </div>
                     <div class="mb-1">
                         Имя
@@ -100,11 +88,9 @@
                     <a href="{% url 'import' %}" class="btn btn-primary my-1">Импортировать данные</a>                    
                 </div>
             </div>
-        </section>
+        </div>
     </div>
 </section>
-
-
 <script>
     if (!'{{ form.errors  }}') {
         document.querySelector("#detail").hidden = false
