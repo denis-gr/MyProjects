@@ -2,7 +2,7 @@ from django.views.generic import CreateView, UpdateView
 from django.views.generic.base import RedirectView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.conf import settings
-from django.contrib.auth.views import LoginView as 
+from django.contrib.auth.views import LoginView as OldLoginView
 
 from .models import User
 from .forms import SignUpForm, UserDetailForm, LoginForm
